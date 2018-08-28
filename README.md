@@ -3,12 +3,15 @@
 > Entrar no servidor e rodar o comando
 
 ```
+sudo apt-get install npm
+cd node/src
+npm install
 docker-compose up --build
 ```
 
-Instalado o Doker no Linux
+Instalado o Docker no Linux
 
-Lita de comandos
+Lista de comandos
 
 1. cd
 2. wget -O instalador.sh http://get.docker.com
@@ -22,6 +25,6 @@ Lita de comandos
 
 Comando para iniciar o servidor
 
-1. Entre na pasta do projeto pelo terminar, ou no Visual Studio Code digite Ctrl+Shift+' (ou diretamente pelo terminal)
+1. Entre na pasta do projeto pelo terminal, ou no Visual Studio Code digite Ctrl+Shift+' (ou diretamente pelo terminal)
 2. Digite esse comando para iniciar o servidor: docker-compose up --build
 3. Após subir o servidor subir a URL: http://localhost:41070/
