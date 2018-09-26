@@ -6,6 +6,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Model\Pessoa;
+use Illuminate\Http\Request;
 
 class PessoaController extends BaseController
 {
@@ -19,10 +20,7 @@ class PessoaController extends BaseController
 
     public function todasPessoas()
     {
-        // $pessoas = Pessoa::orderBy('primeiro_nome', 'desc')
-        //        ->get();
-        //return $pessoas;
-        return response()->json($this->pessoa->todasPessoas(), 200)
+        return response()->json($this->pessoa->todasPessoas($request), 200)
             ->header('Content-Type', 'application/json');
     }
 
@@ -37,15 +35,15 @@ class PessoaController extends BaseController
             ->header('Content-Type', 'application/json');
     }
 
-    public function salvarPessoa()
+    public function salvarPessoa(Request $request)
     {
-        return response()->json($this->pessoa->salvarPessoa(), 200)
+        return response()->json($this->pessoa->salvarPessoa($request), 200)
             ->header('Content-Type', 'application/json');;
     }
 
-    public function atualizarPessoa($id)
+    public function atualizarPessoa(Request $request, $id)
     {
-        $pessoa = $this->pessoa->atualizaPessoa($id);
+        $pessoa = $this->pessoa->atualizaPessoa($request, $id);
         if (!$pessoa) {
             return response()->json(['response', 'Pessoa não encontrada'], 400)
                 ->header('Content-Type', 'application/json');

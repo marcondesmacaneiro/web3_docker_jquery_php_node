@@ -4,6 +4,7 @@ namespace App\Model;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 class Pessoa extends Model
 {
@@ -18,15 +19,10 @@ class Pessoa extends Model
         return self::all();
     }
 
-    public function salvarPessoa()
+    public function salvarPessoa(Request $request)
     {
-        // $input = Input::all();
-        //dd(Input::all());
-        $pessoa = new Pessoa(Input::all());
+        $pessoa = new Pessoa($request->all());
         $pessoa->password = Hash::make($pessoa->password);
-        // $pessoa->fill($pessoa); //mass assigment
-        // $pessoa->primeiro_nome = $input['primeiro_nome'];
-        // $pessoa->segundo_nome = $input['segundo_nome'];
         $pessoa->save();
         return $pessoa;
     }
@@ -49,13 +45,13 @@ class Pessoa extends Model
         return $pessoa->delete(); //pode dar pau na hora de deletar e irá retornar false também
     }
 
-    public function atualizaPessoa($id)
+    public function atualizaPessoa(Request $request, $id)
     {
         $pessoa = self::find($id);
         if (is_null($pessoa)) {
             return false;
         }
-        $input = Input::all();
+        $input = $request->all();
         if (isset($input['password'])) {
             $pessoa->password = Hash::make($input['password']);
         }
