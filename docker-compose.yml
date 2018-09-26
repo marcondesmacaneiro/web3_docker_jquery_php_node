@@ -1,4 +1,4 @@
-version: "3.1"
+version: '3.1'
 services:
   php:
     build: php
@@ -22,12 +22,52 @@ services:
     ports:
       - 41071:3000
   mysql:
-    image: mysql:5.7
+    build: mysql
     container_name: mysql-aulasweb3
+    restart: always
     volumes:
       - ./mysql/data:/var/lib/mysql
     ports:
       - 41072:3306
+  postgres:
+    image: postgres:9.6.10-alpine
+    container_name: postgres-aulasweb3
+    restart: always
+    volumes:
+      - ./postgres/data:/var/lib/postgresql/data
+    ports:
+      - 5455:5432
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=root
+      POSTGRES_PASSWORD: postgres
+  phppgadmin:
+    image: zhajor/docker-phppgadmin
+    container_name: phppgadmin-aulasweb3
+    links:
+      - postgres
+    ports:
+      - 8093:80
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+  app:
+    build: laravel
+    volumes:
+      - ./laravel/src:/var/www/app
+    ports:
+      - 41073:8080
+    links:
+      - mysql
+      - cache
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin-aulasweb3
+    links:
+      - mysql
+    ports:
+      - 8094:80
+    environment:
+      - PMA_ARBITRARY=1
+  cache:
+    image: redis:3.0
+    ports:
+      - "63791:6379"
